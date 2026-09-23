@@ -9,8 +9,8 @@ This project is a **RAG (Retrieval-Augmented Generation)** system with superpowe
 
 1. **Ingestion (The PDF Feast)** 📚: Drop your `.pdf` and `.txt` files into the `data/` folder. Our bot will devour everything using `LangChain`.
 2. **The Mince (Text Chunking)** 🔪: The AI can't swallow everything whole, so we cut the texts into perfect little 1000-character "bites" (chunks) to keep the memory light.
-3. **The Vector Brain (Embeddings & ChromaDB)** 🌐: We use OpenAI's magic (`text-embedding-3-small`) to turn words into numbers and hide them in our local vault, **ChromaDB**. No data travels to external databases: your documents stay safely on your PC.
-4. **The Interrogation (Retrieval & Generation)** 🎤: Ask a question via the terminal and our `gpt-4o-mini` agent will sift through the files in a nanosecond to give you the answer. And if it doesn't know? It throws its hands up and admits defeat. Zero made-up stories, pinky promise! 🤞
+3. **The Vector Brain (Embeddings & ChromaDB)** 🌐: We use open-source magic (`nomic-embed-text`) via Ollama to turn words into numbers and hide them in our local vault, **ChromaDB**. No data travels to external databases: your documents stay 100% safely on your PC!
+4. **The Interrogation (Retrieval & Generation)** 🎤: Ask a question via the terminal and our local `llama3` agent will sift through the files in a nanosecond to give you the answer. And if it doesn't know? It throws its hands up and admits defeat. Zero made-up stories, pinky promise! 🤞
 
 ## 🧪 Ready, Set... Hack! (Local Testing Instructions)
 
@@ -41,11 +41,14 @@ Install all the necessary AI super-modules:
 pip install -r requirements.txt
 ```
 
-### 4. Enter the Launch Code (API Key)
-Create a file named `.env` (you can copy the `.env.example` file) and put your secret OpenAI pass in it:
-```env
-OPENAI_API_KEY=sk-your_super_secret_api_key_here
-```
+### 4. Install the AI Engine (Ollama)
+Since this project runs 100% locally and completely for free, you don't need any API keys! You just need to:
+1. Download and install [Ollama](https://ollama.com/) on your computer.
+2. Open a terminal and download the required models by running:
+   ```bash
+   ollama pull llama3
+   ollama pull nomic-embed-text
+   ```
 
 ### 5. Load the Ammo 📄
 Create a folder named `data/` (if it isn't there already) and throw in some manuals, CVE reports, or corporate policies (in PDF or TXT format). 

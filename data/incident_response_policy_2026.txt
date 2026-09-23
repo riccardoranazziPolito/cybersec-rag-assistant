@@ -1,0 +1,29 @@
+DOCUMENTO RISERVATO - CYBER 4.0
+POLITICA DI RISPOSTA AGLI INCIDENTI (INCIDENT RESPONSE POLICY)
+Data validità: 01 Gennaio 2026
+Versione: 2.1
+
+1. SCOPO
+Il presente documento delinea la procedura ufficiale da seguire in caso di incidente di sicurezza informatica all'interno della rete aziendale.
+
+2. CLASSIFICAZIONE DEGLI INCIDENTI
+- Livello Basso (Tier 1): Eventi anomali isolati (es. tentativi di phishing bloccati, accessi falliti multipli).
+- Livello Medio (Tier 2): Infezioni malware localizzate su singole workstation, senza propagazione laterale.
+- Livello Critico (Tier 3): Compromissione di server critici, attacchi Ransomware, esfiltrazione di dati sensibili o violazione di account con privilegi di amministratore.
+
+3. PROCEDURA DI CONTENIMENTO (RANSOMWARE)
+In caso di identificazione di un attacco Ransomware (Livello Critico), il Security Operations Center (SOC) deve:
+a. Isolare immediatamente gli host infetti disabilitando le porte dello switch a livello di rete (NON spegnere fisicamente le macchine per preservare la RAM per la memory forensics).
+b. Revocare immediatamente i permessi dell'account compromesso tramite Active Directory.
+c. Segnalare l'evento al CISO (Chief Information Security Officer) entro e non oltre 15 minuti dal rilevamento iniziale.
+d. Attivare il team di Crisis Management per la comunicazione verso i clienti, se sono coinvolti dati personali (GDPR).
+
+4. GESTIONE DELLE PASSWORD E DEGLI ACCOUNT PRIVILEGIATI
+Come misura preventiva, la policy aziendale aggiornata al Q1 2026 prevede che le password degli account di amministrazione (Domain Admins) debbano:
+- Essere lunghe almeno 16 caratteri.
+- Essere ruotate tassativamente ogni 60 giorni.
+- Richiedere sempre l'autenticazione a più fattori (MFA) tramite token hardware FIDO2. L'uso di SMS per la 2FA è severamente proibito.
+
+5. VULNERABILITA' NOTA: CVE-2023-9999
+Sulla base dell'ultimo Penetration Test interno, i sistemi critici vulnerabili alla vulnerabilità fittizia CVE-2023-9999 (Remote Code Execution) sono unicamente i server legacy situati nel cluster "Alpha-DB". 
+Il team di patching ha tempo fino al 30 Ottobre 2026 per mitigare la falla applicando la patch v.4.5 rilasciata dal vendor. Fino ad allora, il traffico verso "Alpha-DB" è strettamente limitato e monitorato dal firewall con regole di IPS (Intrusion Prevention System) impostate in modalità "Drop" preventiva.

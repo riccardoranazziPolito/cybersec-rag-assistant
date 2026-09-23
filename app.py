@@ -1,17 +1,12 @@
 import os
 import glob
-from dotenv import load_dotenv
-
 from langchain_community.document_loaders import PyPDFLoader, TextLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_openai import OpenAIEmbeddings, ChatOpenAI
+from langchain_ollama import OllamaEmbeddings, ChatOllama
 from langchain_chroma import Chroma
 from langchain_core.prompts import PromptTemplate
-from langchain.chains import create_retrieval_chain
-from langchain.chains.combine_documents import create_stuff_documents_chain
-
-# Caricamento delle variabili d'ambiente (es. OPENAI_API_KEY)
-load_dotenv()
+from langchain_classic.chains.retrieval import create_retrieval_chain
+from langchain_classic.chains.combine_documents.stuff import create_stuff_documents_chain
 
 # Costanti
 DATA_DIR = "./data"
@@ -70,8 +65,8 @@ def initialize_vector_store(chunks):
     """
     Inizializza il Vector Database su ChromaDB e ne garantisce la persistenza locale.
     """
-    # Utilizzo dell'ultimo modello di embedding ottimizzato per efficienza e costi
-    embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
+    # Utilizzo di nomic-embed-text, un modello open source ottimizzato per gli embeddings
+    embeddings = OllamaEmbeddings(model="nomic-embed-text")
     
     # Se ci sono nuovi documenti, si crea o aggiorna il database e si salva su disco
     if chunks:
@@ -101,8 +96,8 @@ def create_rag_chain(vectorstore):
     Crea la catena RAG (Retrieval-Augmented Generation) impostando un prompt molto severo, 
     così da evitare allucinazioni in contesto di Threat Intelligence.
     """
-    # gpt-4o-mini è performante ed economico. Temperatura 0 per risposte deterministiche.
-    llm = ChatOpenAI(model="gpt-4o-mini", temperature=0)
+    # Usiamo llama3 in locale tramite Ollama. Temperatura 0 per risposte deterministiche.
+    llm = ChatOllama(model="llama3", temperature=0)
     
     # Prompt ottimizzato per il dominio Cybersecurity
     prompt_template = """Sei un CyberSec Threat Intelligence Assistant esperto. 
@@ -139,12 +134,7 @@ def main():
     print("="*50)
     print("Inizializzazione in corso...\n")
     
-    # Verifica presenza API Key
-    if not os.getenv("OPENAI_API_KEY"):
-        print("❌ ERRORE: Variabile d'ambiente OPENAI_API_KEY non trovata.")
-        print("Crea un file .env nella root del progetto e aggiungi la riga:")
-        print("OPENAI_API_KEY=la_tua_chiave_api_qui")
-        return
+    # Nessuna API Key necessaria con Ollama! Il sistema gira 100% in locale.
 
     # 1. Lettura Documenti
     docs = load_documents(DATA_DIR)
