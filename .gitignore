@@ -1,0 +1,19 @@
+# Ambiente e secrets
+.env
+.venv
+venv/
+ENV/
+
+# Cache Python
+__pycache__/
+*.pyc
+
+# Vector Database (da non tracciare per privacy e grandezza)
+chroma_db/
+
+# MacOS
+.DS_Store
+
+# Data Directory 
+# (Scommenta la riga seguente se NON vuoi caricare i tuoi report di vulnerabilità / policy su GitHub)
+# data/
